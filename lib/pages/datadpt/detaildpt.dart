@@ -149,7 +149,7 @@ class _DetailDptState extends State<DetailDpt> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 5,
+      quality: 1,
       format: CompressFormat.jpeg,
     );
 
@@ -160,6 +160,38 @@ class _DetailDptState extends State<DetailDpt> {
   }
 
   Future getFotoKtpKonfirmasiFromGallery() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      Uint8List imgbytes1 = imageTemp.readAsBytesSync();
+      String fileBase64 = base64Encode(imgbytes1);
+      setState(() {
+        if (kDebugMode) {
+          print('Nama File ${image.name}');
+          print(fileBase64);
+        }
+        // this.image = imageTemp;
+        // imageController.text = imageName;
+        testCompressAndGetFileKtp(
+          imageTemp,
+        ).then((value) {
+          if (kDebugMode) {
+            print('Nama File ${value.path}');
+          }
+          setState(() {
+            final bytes = File(value.path).readAsBytesSync();
+            fotoKtpKonfirmasiBase64 = base64Encode(bytes);
+            print(fotoKtpKonfirmasiBase64);
+          });
+        });
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future getFotoKtpKonfirmasiFromCamera() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
@@ -191,9 +223,32 @@ class _DetailDptState extends State<DetailDpt> {
     }
   }
 
-  Future getFotoKkKonfirmasiFromGallery() async {
+  Future getFotoKkKonfirmasiFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      final imageTemp = File(pickedFile.path);
+      testCompressAndGetFileKtp(imageTemp).then((value) => {
+            setState(() {
+              final bytes = File(value.path).readAsBytesSync();
+              fotoKkKonfirmasiBase64 = base64Encode(bytes);
+              print(fotoKkKonfirmasiBase64);
+            })
+          });
+      setState(() {
+        fotoKkKonfirmasiName = pickedFile.name;
+      });
+    } else {
+      print("ksong");
+    }
+  }
+
+  Future getFotoKkKonfirmasiFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
       maxWidth: 1800,
       maxHeight: 1800,
     );
@@ -429,7 +484,49 @@ class _DetailDptState extends State<DetailDpt> {
                       color: Colors.grey.shade100,
                       fileName: fotoKtpNameKonfirmasi,
                       onClick: () {
-                        getFotoKtpKonfirmasiFromGallery();
+                        betterShowMessage(
+                            title: 'Pilih metode',
+                            content: Text(''),
+                            onDefaultX: true,
+                            buttons: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    child: GFButton(
+                                      onPressed: () {
+                                        getFotoKtpKonfirmasiFromGallery();
+                                        Navigator.pop(context);
+                                      },
+                                      text: "Dari Gallery",
+                                      color: AppColors.primary,
+                                      textStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      size: GFSize.LARGE,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    child: GFButton(
+                                      onPressed: () {
+                                        getFotoKtpKonfirmasiFromCamera();
+                                        Navigator.pop(context);
+                                      },
+                                      text: "Dari Kamera",
+                                      color: AppColors.primary,
+                                      textStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      size: GFSize.LARGE,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                            context: context);
                       },
                     )
                   : null,
@@ -472,12 +569,54 @@ class _DetailDptState extends State<DetailDpt> {
               height: 8,
             ),
             Container(
-              child: fotoKtpKonfirmasiBase64 == null
+              child: fotoKkKonfirmasiBase64 == null
                   ? UploadFile(
                       color: Colors.grey.shade100,
                       fileName: fotoKkKonfirmasiName,
                       onClick: () {
-                        getFotoKkKonfirmasiFromGallery();
+                        betterShowMessage(
+                            title: 'Pilih metode',
+                            content: Text(''),
+                            onDefaultX: true,
+                            buttons: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    child: GFButton(
+                                      onPressed: () {
+                                        getFotoKkKonfirmasiFromGallery();
+                                        Navigator.pop(context);
+                                      },
+                                      text: "Dari Gallery",
+                                      color: AppColors.primary,
+                                      textStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      size: GFSize.LARGE,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 60,
+                                    child: GFButton(
+                                      onPressed: () {
+                                        getFotoKkKonfirmasiFromCamera();
+                                        Navigator.pop(context);
+                                      },
+                                      text: "Dari Kamera",
+                                      color: AppColors.primary,
+                                      textStyle: GoogleFonts.plusJakartaSans(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      size: GFSize.LARGE,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                            context: context);
                       },
                     )
                   : null,

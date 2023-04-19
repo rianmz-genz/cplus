@@ -111,6 +111,7 @@ class _LoginState extends State<Login> {
         response = e.response;
       } else {
         betterShowMessage(
+          onDefaultX: false,
           title: "Terjadi kesalahan",
           content: Text("${e.message}"),
           context: context,
@@ -177,6 +178,7 @@ class _LoginState extends State<Login> {
           isHitApi = false;
         });
         betterShowMessage(
+            onDefaultX: false,
             title: 'Login Gagal',
             content: Text(responseMap['message']),
             context: context);
@@ -186,7 +188,10 @@ class _LoginState extends State<Login> {
           isHitApi = false;
         });
         betterShowMessage(
-            title: 'Login Gagal', content: Text('${msg}'), context: context);
+            onDefaultX: false,
+            title: 'Login Gagal',
+            content: Text('${msg}'),
+            context: context);
         print(response.data);
       }
     }

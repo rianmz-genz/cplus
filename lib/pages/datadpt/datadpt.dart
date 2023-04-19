@@ -253,7 +253,7 @@ class _DataDptState extends State<DataDpt> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 5,
+      quality: 3,
       format: CompressFormat.jpeg,
     );
 
@@ -308,6 +308,28 @@ class _DataDptState extends State<DataDpt> {
 
   getFotoKtpFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      final imageTemp = File(pickedFile.path);
+      testCompressAndGetFileKtp(imageTemp).then((value) => {
+            setState(() {
+              final bytes = File(value.path).readAsBytesSync();
+              fotoKtpBase64 = base64Encode(bytes);
+              print(fotoKtpBase64);
+            })
+          });
+      setState(() {
+        fotoKtpName = pickedFile.name;
+      });
+    } else {
+      print("null");
+    }
+  }
+  getFotoKtpFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
       maxWidth: 1800,
       maxHeight: 1800,
@@ -330,6 +352,25 @@ class _DataDptState extends State<DataDpt> {
   }
 
   getFotoKKFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      final imageTemp = File(pickedFile.path);
+      testCompressAndGetFileKtp(imageTemp).then((value) => {
+            setState(() {
+              final bytes = File(value.path).readAsBytesSync();
+              fotoKkBase64 = base64Encode(bytes);
+              print(fotoKkBase64);
+            })
+          });
+      setState(() {
+        fotoKKName = pickedFile.name;
+      });
+    }
+  }
+
+  getFotoKKFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
@@ -1429,7 +1470,56 @@ class _DataDptState extends State<DataDpt> {
                                       color: Colors.grey.shade100,
                                       fileName: fotoKKName,
                                       onClick: () {
-                                        getFotoKKFromGallery();
+                                        betterShowMessage(
+                                            title: 'Pilih metode',
+                                            content: Text(''),
+                                            onDefaultX: true,
+                                            buttons: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    height: 60,
+                                                    child: GFButton(
+                                                      onPressed: () {
+                                                        getFotoKKFromGallery();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      text: "Dari Gallery",
+                                                      color: AppColors.primary,
+                                                      textStyle: GoogleFonts
+                                                          .plusJakartaSans(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                      size: GFSize.LARGE,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: 60,
+                                                    child: GFButton(
+                                                      onPressed: () {
+                                                        getFotoKKFromCamera();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      text: "Dari Kamera",
+                                                      color: AppColors.primary,
+                                                      textStyle: GoogleFonts
+                                                          .plusJakartaSans(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                      size: GFSize.LARGE,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                            context: context);
                                       },
                                     ),
                                     SizedBox(
@@ -1454,7 +1544,56 @@ class _DataDptState extends State<DataDpt> {
                                       color: Colors.grey.shade100,
                                       fileName: fotoKtpName,
                                       onClick: () {
-                                        getFotoKtpFromGallery();
+                                       betterShowMessage(
+                                            title: 'Pilih metode',
+                                            content: Text(''),
+                                            onDefaultX: true,
+                                            buttons: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    height: 60,
+                                                    child: GFButton(
+                                                      onPressed: () {
+                                                        getFotoKtpFromGallery();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      text: "Dari Gallery",
+                                                      color: AppColors.primary,
+                                                      textStyle: GoogleFonts
+                                                          .plusJakartaSans(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                      size: GFSize.LARGE,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: 60,
+                                                    child: GFButton(
+                                                      onPressed: () {
+                                                        getFotoKtpFromCamera();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      text: "Dari Kamera",
+                                                      color: AppColors.primary,
+                                                      textStyle: GoogleFonts
+                                                          .plusJakartaSans(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                      size: GFSize.LARGE,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                            context: context);
                                       },
                                     ),
                                     Container(

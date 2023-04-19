@@ -94,7 +94,7 @@ class _Register2State extends State<Register2> {
     return result;
   }
 
-  _getFotoDiriFromGallery() async {
+  _getFotoDiriFromCamera() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
@@ -126,7 +126,73 @@ class _Register2State extends State<Register2> {
     }
   }
 
+  _getFotoDiriFromGallery() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      Uint8List imgbytes1 = imageTemp.readAsBytesSync();
+      String fileBase64 = base64Encode(imgbytes1);
+      setState(() {
+        if (kDebugMode) {
+          print('Nama File ${image.name}');
+          print(fileBase64);
+          fotoDiriName = image.name;
+        }
+        // this.image = imageTemp;
+        // imageController.text = imageName;
+        testCompressAndGetFileKtp(
+          imageTemp,
+        ).then((value) {
+          if (kDebugMode) {
+            print('Nama File ${value.path}');
+          }
+          setState(() {
+            final bytes = File(value.path).readAsBytesSync();
+            fotoDiriBase64 = base64Encode(bytes);
+          });
+        });
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   _getFotoKtpFromGallery() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      Uint8List imgbytes1 = imageTemp.readAsBytesSync();
+      String fileBase64 = base64Encode(imgbytes1);
+      setState(() {
+        if (kDebugMode) {
+          print('Nama File ${image.name}');
+          print(fileBase64);
+          fotoKtpName = image.name;
+        }
+        // this.image = imageTemp;
+        // imageController.text = imageName;
+        testCompressAndGetFileKtp(
+          imageTemp,
+        ).then((value) {
+          if (kDebugMode) {
+            print('Nama File ${value.path}');
+          }
+          setState(() {
+            final bytes = File(value.path).readAsBytesSync();
+            fotoKtpBase64 = base64Encode(bytes);
+
+            print(fotoKtpBase64);
+          });
+        });
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  _getFotoKtpFromCamera() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
@@ -398,7 +464,51 @@ class _Register2State extends State<Register2> {
                         UploadFile(
                           fileName: fotoDiriName,
                           onClick: () {
-                            _getFotoDiriFromGallery();
+                            betterShowMessage(
+                                title: 'Pilih metode',
+                                content: Text(''),
+                                onDefaultX: true,
+                                buttons: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        child: GFButton(
+                                          onPressed: () {
+                                            _getFotoDiriFromGallery();
+                                            Navigator.pop(context);
+                                          },
+                                          text: "Dari Gallery",
+                                          color: AppColors.primary,
+                                          textStyle:
+                                              GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                          size: GFSize.LARGE,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 60,
+                                        child: GFButton(
+                                          onPressed: () {
+                                            _getFotoDiriFromCamera();
+                                            Navigator.pop(context);
+                                          },
+                                          text: "Dari Kamera",
+                                          color: AppColors.primary,
+                                          textStyle:
+                                              GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                          size: GFSize.LARGE,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                                context: context);
                           },
                         ),
                         SizedBox(
@@ -416,7 +526,51 @@ class _Register2State extends State<Register2> {
                         UploadFile(
                           fileName: fotoKtpName,
                           onClick: () {
-                            _getFotoKtpFromGallery();
+                            betterShowMessage(
+                                title: 'Pilih metode',
+                                content: Text(''),
+                                onDefaultX: true,
+                                buttons: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        child: GFButton(
+                                          onPressed: () {
+                                            _getFotoKtpFromGallery();
+                                            Navigator.pop(context);
+                                          },
+                                          text: "Dari Gallery",
+                                          color: AppColors.primary,
+                                          textStyle:
+                                              GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                          size: GFSize.LARGE,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 60,
+                                        child: GFButton(
+                                          onPressed: () {
+                                            _getFotoKtpFromCamera();
+                                            Navigator.pop(context);
+                                          },
+                                          text: "Dari Kamera",
+                                          color: AppColors.primary,
+                                          textStyle:
+                                              GoogleFonts.plusJakartaSans(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                          size: GFSize.LARGE,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                                context: context);
                           },
                         ),
                         Container(

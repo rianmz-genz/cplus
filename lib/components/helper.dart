@@ -5,6 +5,7 @@ Future<void> betterShowMessage(
     required String title,
     required Widget content,
     List<Widget>? buttons,
+    bool? onDefaultX = false,
     Function()? onDefaultOK}) {
   buttons ??= [
     TextButton(
@@ -23,7 +24,24 @@ Future<void> betterShowMessage(
           return WillPopScope(
             onWillPop: () => Future.value(false),
             child: AlertDialog(
-              title: Text(title),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    InkWell(
+                      child: onDefaultX!
+                          ? Icon(Icons.clear)
+                          : SizedBox(
+                              width: 1,
+                            ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ]),
               content: content,
               actions: buttons,
             ),

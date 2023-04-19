@@ -312,11 +312,11 @@ class _BerandaState extends State<Beranda> {
                         topText: "Kontak Admin",
                         text: Column(
                           children: [
-                            Text("No. HP 1: 098977",
+                            Text("Anom: 0895622720626",
                                 style: TextStyle(fontSize: FontSize.body)),
-                            Text("No. HP 2: 098977",
-                                style: TextStyle(fontSize: FontSize.body)),
-                            Text("Email: admin@tsgitdev.com",
+                            // Text("No. HP 2: 098977",
+                            //     style: TextStyle(fontSize: FontSize.body)),
+                            Text("Email: ofc.calegplus@gmail.com",
                                 style: TextStyle(fontSize: FontSize.body)),
                           ],
                         )),
