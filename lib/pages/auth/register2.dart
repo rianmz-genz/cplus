@@ -84,7 +84,7 @@ class _Register2State extends State<Register2> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 1,
+      quality: 60,
       format: CompressFormat.jpeg,
     );
 
@@ -268,7 +268,7 @@ class _Register2State extends State<Register2> {
           prosesLoading = (count / total * 100).round();
           print("prosesLoading = $prosesLoading");
           EasyLoading.show(
-            status: 'Loading ${prosesLoading}%',
+            status: 'Loading..',
             maskType: EasyLoadingMaskType.black,
           );
         },

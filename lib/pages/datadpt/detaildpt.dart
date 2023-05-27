@@ -80,6 +80,7 @@ class _DetailDptState extends State<DetailDpt> {
   String fotoKtpNameKonfirmasi = "Tidak Ada File";
   String fotoKkKonfirmasiName = "Tidak Ada File";
   var ket = TextEditingController();
+  var PHONE = TextEditingController();
   getStatusPerkawinan() {
     switch (widget.statusperkawinan) {
       case 'S':
@@ -149,7 +150,7 @@ class _DetailDptState extends State<DetailDpt> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 1,
+      quality: 60,
       format: CompressFormat.jpeg,
     );
 
@@ -274,6 +275,7 @@ class _DetailDptState extends State<DetailDpt> {
       'photo_KK': fotoKkKonfirmasiBase64,
       'keterangan': ket.text,
       'photo_KTP': fotoKtpKonfirmasiBase64,
+      'phone': PHONE.text
     });
     prefs = await SharedPreferences.getInstance();
     int prosesLoading = 0;
@@ -295,7 +297,7 @@ class _DetailDptState extends State<DetailDpt> {
           prosesLoading = (count / total * 100).round();
           print("prosesLoading = $prosesLoading");
           EasyLoading.show(
-            status: '$prosesLoading',
+            status: 'Loading..',
             maskType: EasyLoadingMaskType.black,
           );
         },
@@ -636,6 +638,41 @@ class _DetailDptState extends State<DetailDpt> {
                         type: TextInputType.text,
                         controller: ket)
                     : null),
+            SizedBox(height: 8),
+            Row(children: [
+              Flexible(
+                  child: Text(
+                "Nomor Telepon*",
+                style: TextStyle(
+                    color: AppColors.textBlack, fontSize: FontSize.title),
+              ))
+            ]),
+            SizedBox(height: 4),
+            TextField(
+              controller: PHONE,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  fillColor: Colors.grey.shade100,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none),
+                  hintText: "Cth: 082589877654",
+                  hintStyle: TextStyle(fontSize: FontSize.subtitle)),
+            ),
             SizedBox(height: 16),
             Container(
                 width: MediaQuery.of(context).size.width,
@@ -649,6 +686,14 @@ class _DetailDptState extends State<DetailDpt> {
                                 title: '',
                                 content:
                                     const Text('Harus mengupload foto ktp!'),
+                                context: context);
+                            return;
+                          }
+                          if (PHONE.text.isEmpty) {
+                            betterShowMessage(
+                                title: '',
+                                content:
+                                    const Text('Harus mengisi nomor telepon!'),
                                 context: context);
                             return;
                           }

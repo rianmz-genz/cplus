@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
           prosesLoading = (count / total * 100).round();
           print("prosesLoading = $prosesLoading");
           EasyLoading.show(
-            status: 'Loading ${prosesLoading}%',
+            status: 'Loading..',
             maskType: EasyLoadingMaskType.black,
           );
         },

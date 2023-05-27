@@ -65,6 +65,7 @@ class _DataDptState extends State<DataDpt> {
   bool isSearching = false;
   bool isAfterSearch = false;
   var noKK = TextEditingController();
+  var PHONE = TextEditingController();
   var NIK = TextEditingController();
   var NIKKonfirmasi = TextEditingController();
   var NamaLengkap = TextEditingController();
@@ -253,7 +254,7 @@ class _DataDptState extends State<DataDpt> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 3,
+      quality: 60,
       format: CompressFormat.jpeg,
     );
 
@@ -328,6 +329,7 @@ class _DataDptState extends State<DataDpt> {
       print("null");
     }
   }
+
   getFotoKtpFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
@@ -438,6 +440,7 @@ class _DataDptState extends State<DataDpt> {
       "usia": 0,
       "dob_place": placeBodF,
       "marital_status": marriedF,
+      "phone": PHONE.text,
       "gender": genderF,
       "address": desaValue,
       "disabilty": null,
@@ -469,7 +472,7 @@ class _DataDptState extends State<DataDpt> {
           prosesLoading = (count / total * 100).round();
           print("prosesLoading = $prosesLoading");
           EasyLoading.show(
-            status: 'Loading ${prosesLoading}%',
+            status: 'Loading..',
             maskType: EasyLoadingMaskType.black,
           );
         },
@@ -1544,7 +1547,7 @@ class _DataDptState extends State<DataDpt> {
                                       color: Colors.grey.shade100,
                                       fileName: fotoKtpName,
                                       onClick: () {
-                                       betterShowMessage(
+                                        betterShowMessage(
                                             title: 'Pilih metode',
                                             content: Text(''),
                                             onDefaultX: true,
@@ -1596,6 +1599,48 @@ class _DataDptState extends State<DataDpt> {
                                             context: context);
                                       },
                                     ),
+                                    SizedBox(height: 8),
+                                    Row(children: [
+                                      Flexible(
+                                          child: Text(
+                                        "Nomor Telepon*",
+                                        style: TextStyle(
+                                            color: AppColors.textBlack,
+                                            fontSize: FontSize.title),
+                                      ))
+                                    ]),
+                                    SizedBox(height: 4),
+                                    TextField(
+                                      controller: PHONE,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 10),
+                                          fillColor: Colors.grey.shade100,
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none),
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none),
+                                          disabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none),
+                                          hintText: "Cth: 082589877654",
+                                          hintStyle: TextStyle(
+                                              fontSize: FontSize.subtitle)),
+                                    ),
                                     Container(
                                       margin: EdgeInsets.only(top: 16),
                                       width: MediaQuery.of(context).size.width,
@@ -1616,6 +1661,7 @@ class _DataDptState extends State<DataDpt> {
                                               rt.text.isEmpty ||
                                               rw.text.isEmpty ||
                                               TglLahir.text.isEmpty ||
+                                              PHONE.text.isEmpty ||
                                               BlnLahir.text.isEmpty) {
                                             betterShowMessage(
                                                 context: context,

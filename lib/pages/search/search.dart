@@ -206,6 +206,7 @@ class _SearchState extends State<Search> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => DetailSearch(
+                                                  phone: dpps[index]['phone'],
                                                   tps: dpps[index]['tps']
                                                       ?['name'],
                                                   resFotoKk: dpps[index]

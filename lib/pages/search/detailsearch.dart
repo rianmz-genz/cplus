@@ -42,6 +42,7 @@ class DetailSearch extends StatefulWidget {
       required this.resName,
       required this.usia,
       required this.resFotoKtp,
+      required this.phone,
       required this.tps,
       required this.resFotoKk});
   var namalengkap;
@@ -57,6 +58,7 @@ class DetailSearch extends StatefulWidget {
   var resFotoKk;
   var resName;
   var tps;
+  var phone;
 
   @override
   State<DetailSearch> createState() => _DetailSearchState();
@@ -147,7 +149,7 @@ class _DetailSearchState extends State<DetailSearch> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 5,
+      quality: 60,
       format: CompressFormat.jpeg,
     );
 
@@ -371,7 +373,12 @@ class _DetailSearchState extends State<DetailSearch> {
             SizedBox(height: 8),
             ProfileItem(
               leftText: "Keterangan",
-              rightText: widget.keterangan.isEmpty ? "-" : "",
+              rightText: widget.keterangan.isEmpty ? "-" : widget.keterangan,
+            ),
+            SizedBox(height: 8),
+            ProfileItem(
+              leftText: "Nomor Telepon",
+              rightText: widget.phone ?? "-",
             ),
             SizedBox(height: 8),
             // Row(

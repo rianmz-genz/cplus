@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
           prosesLoading = (count / total * 100).round();
           print("prosesLoading = $prosesLoading");
           EasyLoading.show(
-            status: 'Loading ${prosesLoading}%',
+            status: 'Loading..',
             maskType: EasyLoadingMaskType.black,
           );
         },
